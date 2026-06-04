@@ -5,6 +5,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { useForm } from '@tanstack/react-form-nextjs';
 import styled from 'styled-components';
 import { z } from 'zod';
+import useCreatePlan from '@/features/plan/hooks/useCreatePlan';
+import { toast } from 'sonner';
 
 const createPlanSchema = z.object({
   title: z.string().min(1, 'Title is required'),
@@ -18,6 +20,7 @@ const ButtonContainer = styled.div`
 `;
 
 export function CreatePlan({ onCancel }: { onCancel?: () => void }) {
+  const { mutateAsync: createPlanAsync } = useCreatePlan(onCancel);
   const form = useForm({
     defaultValues: {
       title: '',
@@ -27,7 +30,11 @@ export function CreatePlan({ onCancel }: { onCancel?: () => void }) {
       onSubmit: createPlanSchema,
     },
     onSubmit: async ({ value }) => {
-      console.log(value);
+      toast.promise(createPlanAsync(value), {
+        loading: 'Creating plan...',
+        success: 'Plan created successfully',
+        error: 'Failed to create plan',
+      });
     },
   });
   return (
