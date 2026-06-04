@@ -34,7 +34,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col mx-8 my-4">
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           <Providers>{children}</Providers>
-          <Toaster />
+          <Toaster position="top-center" />
         </ThemeProvider>
       </body>
     </html>
