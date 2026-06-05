@@ -4,6 +4,7 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import styled from 'styled-components';
+import { PlanActivityDialog } from '@/features/plan-activity/components/PlanActivityDialog';
 
 const CalendarContainer = styled.div`
   .fc-daygrid-day,
@@ -21,6 +22,7 @@ const CalendarContainer = styled.div`
 export function CalendarView() {
   return (
     <CalendarContainer>
+      <PlanActivityDialog showTrigger />
       <FullCalendar
         plugins={[dayGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
