@@ -12,7 +12,7 @@ const createPlanActivity = async ({
   assignedDate,
   notes,
 }: CreatePlanActivityDto) => {
-  const { data } = await api.post<PlanActivity>('/plans', {
+  const { data } = await api.post<PlanActivity>('/plan-activities', {
     planId,
     assignedDate: assignedDate.toISOString(),
     notes,

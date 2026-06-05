@@ -5,6 +5,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import styled from 'styled-components';
 import { PlanActivityDialog } from '@/features/plan-activity/components/PlanActivityDialog';
+import useGetPlanActivities from '@/features/plan-activity/hooks/useGetPlanActivities';
 
 const CalendarContainer = styled.div`
   .fc-daygrid-day,
@@ -20,6 +21,7 @@ const CalendarContainer = styled.div`
 `;
 
 export function CalendarView() {
+  const { data: planActivities } = useGetPlanActivities();
   return (
     <CalendarContainer>
       <PlanActivityDialog showTrigger />
@@ -31,6 +33,10 @@ export function CalendarView() {
         dateClick={(info) => {
           console.log('Date clicked:', info);
         }}
+        events={planActivities?.map((activity) => ({
+          title: 'Workout',
+          start: activity.assignedDate,
+        }))}
       />
     </CalendarContainer>
   );
