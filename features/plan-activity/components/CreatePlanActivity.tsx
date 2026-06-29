@@ -96,7 +96,9 @@ export function CreatePlanActivity({ onCancel }: { onCancel?: () => void }) {
                   onValueChange={(val) => field.handleChange(Number(val))}
                 >
                   <SelectTrigger className="w-full max-w-48">
-                    <SelectValue placeholder="Select a plan" />
+                    <SelectValue placeholder="Select a plan">
+                      {plansOptions?.find((plan) => Number(plan.value) === Number(field.state.value))?.label}
+                    </SelectValue>
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
