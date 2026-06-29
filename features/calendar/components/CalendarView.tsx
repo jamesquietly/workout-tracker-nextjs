@@ -6,6 +6,9 @@ import interactionPlugin from '@fullcalendar/interaction';
 import styled from 'styled-components';
 import { PlanActivityDialog } from '@/features/plan-activity/components/PlanActivityDialog';
 import useGetPlanActivities from '@/features/plan-activity/hooks/useGetPlanActivities';
+import { useState } from 'react';
+import { PlanActivity } from '@/features/plan-activity/interfaces/PlanActivity';
+import { EditPlanActivityDialog } from '@/features/plan-activity/components/EditPlanActivityDialog';
 
 const CalendarContainer = styled.div`
   .fc-daygrid-day,
@@ -22,6 +25,8 @@ const CalendarContainer = styled.div`
 
 export function CalendarView() {
   const { data: planActivities } = useGetPlanActivities();
+  const [openEditPlanActivity, setOpenEditPlanActivity] = useState(false);
+  const [selectedPlanActivity, setSelectedPlanActivity] = useState<PlanActivity | undefined>(undefined);
   return (
     <CalendarContainer>
       <PlanActivityDialog showTrigger />
@@ -36,11 +41,23 @@ export function CalendarView() {
         events={planActivities?.map((activity) => ({
           title: activity.plan?.title || 'Workout',
           start: activity.assignedDate,
+          plan: activity.plan,
+          assignedDate: activity.assignedDate,
+          notes: activity.notes,
+          planActivityId: activity.id,
         }))}
         eventClick={(info) => {
-          console.log('Event clicked:', info);
+          const currentPlanActivity: PlanActivity = {
+            id: info.event.extendedProps.planActivityId,
+            assignedDate: info.event.extendedProps.assignedDate,
+            plan: info.event.extendedProps.plan,
+            notes: info.event.extendedProps.notes,
+          };
+          setSelectedPlanActivity(currentPlanActivity);
+          setOpenEditPlanActivity(true);
         }}
       />
+      <EditPlanActivityDialog open={openEditPlanActivity} planActivity={selectedPlanActivity} setIsOpen={setOpenEditPlanActivity} />
     </CalendarContainer>
   );
 }
