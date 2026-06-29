@@ -28,7 +28,7 @@ import {
 
 const createPlanActivitySchema = z.object({
   planId: z.number().min(1, 'Plan ID is required'),
-  assignedDate: z.date().min(new Date(), 'Assigned date must be in the future'),
+  assignedDate: z.date(),
   notes: z.string(),
 });
 
