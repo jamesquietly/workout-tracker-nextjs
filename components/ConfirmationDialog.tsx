@@ -21,7 +21,7 @@ export function ConfirmationDialog({
   onCancel: () => void;
 }) {
   return (
-    <Dialog open={open}>
+    <Dialog open={open} onOpenChange={onCancel}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
