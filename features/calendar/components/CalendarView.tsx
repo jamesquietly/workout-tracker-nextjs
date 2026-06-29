@@ -34,9 +34,12 @@ export function CalendarView() {
           console.log('Date clicked:', info);
         }}
         events={planActivities?.map((activity) => ({
-          title: 'Workout',
+          title: activity.plan?.title || 'Workout',
           start: activity.assignedDate,
         }))}
+        eventClick={(info) => {
+          console.log('Event clicked:', info);
+        }}
       />
     </CalendarContainer>
   );
