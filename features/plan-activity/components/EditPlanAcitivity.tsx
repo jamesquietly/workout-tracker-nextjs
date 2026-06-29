@@ -36,16 +36,23 @@ const editPlanActivitySchema = z.object({
 
 const ButtonContainer = styled.div`
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   margin-top: 1rem;
+`;
+
+const ButtonGroup = styled.div`
+  display: flex;
+  gap: 0.5rem;
 `;
 
 export function EditPlanActivity({
   onCancel,
   planActivity,
+  onDelete,
 }: {
   onCancel?: () => void;
   planActivity?: PlanActivity;
+  onDelete?: () => void;
 }) {
   const { data: plans } = useGetPlans();
   const { mutateAsync: updatePlanActivityAsync } =
@@ -142,7 +149,7 @@ export function EditPlanActivity({
           name="assignedDate"
           children={(field) => {
             return (
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-2 mt-4">
                 <label
                   htmlFor={field.name}
                   className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -206,11 +213,20 @@ export function EditPlanActivity({
         />
       </FieldGroup>
 
-      <ButtonContainer>
-        <Button type="button" variant="secondary" onClick={onCancel}>
-          Cancel
-        </Button>
-        <Button type="submit">Update</Button>
+      <ButtonContainer
+        style={{ justifyContent: onDelete ? 'space-between' : 'flex-end' }}
+      >
+        {onDelete && (
+          <Button type="button" variant="destructive" onClick={onDelete}>
+            Delete
+          </Button>
+        )}
+        <ButtonGroup>
+          <Button type="button" variant="secondary" onClick={onCancel}>
+            Cancel
+          </Button>
+          <Button type="submit">Update</Button>
+        </ButtonGroup>
       </ButtonContainer>
     </form>
   );

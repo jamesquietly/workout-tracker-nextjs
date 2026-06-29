@@ -9,6 +9,8 @@ import useGetPlanActivities from '@/features/plan-activity/hooks/useGetPlanActiv
 import { useState } from 'react';
 import { PlanActivity } from '@/features/plan-activity/interfaces/PlanActivity';
 import { EditPlanActivityDialog } from '@/features/plan-activity/components/EditPlanActivityDialog';
+import { ConfirmationDialog } from '@/components/ConfirmationDialog';
+import useDeletePlanActivity from '@/features/plan-activity/hooks/useDeletePlanActivity';
 
 const CalendarContainer = styled.div`
   .fc-daygrid-day,
@@ -26,7 +28,11 @@ const CalendarContainer = styled.div`
 export function CalendarView() {
   const { data: planActivities } = useGetPlanActivities();
   const [openEditPlanActivity, setOpenEditPlanActivity] = useState(false);
-  const [selectedPlanActivity, setSelectedPlanActivity] = useState<PlanActivity | undefined>(undefined);
+  const [selectedPlanActivity, setSelectedPlanActivity] = useState<
+    PlanActivity | undefined
+  >(undefined);
+  const [openDeleteConfirmation, setOpenDeleteConfirmation] = useState(false);
+  const { mutate: deletePlanActivity } = useDeletePlanActivity();
   return (
     <CalendarContainer>
       <PlanActivityDialog showTrigger />
@@ -57,7 +63,28 @@ export function CalendarView() {
           setOpenEditPlanActivity(true);
         }}
       />
-      <EditPlanActivityDialog open={openEditPlanActivity} planActivity={selectedPlanActivity} setIsOpen={setOpenEditPlanActivity} />
+      <EditPlanActivityDialog
+        open={openEditPlanActivity}
+        planActivity={selectedPlanActivity}
+        onCancel={() => setOpenEditPlanActivity(false)}
+        onDelete={() => {
+          setOpenEditPlanActivity(false);
+          setOpenDeleteConfirmation(true);
+        }}
+      />
+      <ConfirmationDialog
+        open={openDeleteConfirmation}
+        title={'Delete Workout'}
+        description={`Are you sure you want to delete this workout?`}
+        onCancel={() => setOpenDeleteConfirmation(false)}
+        onConfirm={() => {
+          setOpenDeleteConfirmation(false);
+          if (selectedPlanActivity) {
+            deletePlanActivity({ id: selectedPlanActivity.id });
+            setSelectedPlanActivity(undefined);
+          }
+        }}
+      />
     </CalendarContainer>
   );
 }

@@ -11,22 +11,26 @@ import { PlanActivity } from '@/features/plan-activity/interfaces/PlanActivity';
 export function EditPlanActivityDialog({
   open,
   planActivity,
-  setIsOpen,
+  onCancel,
+  onDelete,
 }: {
   open?: boolean;
   planActivity?: PlanActivity;
-  setIsOpen?: (open: boolean) => void;
+  onCancel?: () => void;
+  onDelete?: () => void;
 }) {
   return (
-    <Dialog open={open} onOpenChange={setIsOpen}>
+    <Dialog open={open}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Edit Workout</DialogTitle>
-          <DialogDescription>
-            Edit a workout in the calendar.
-          </DialogDescription>
+          <DialogDescription>Edit a workout in the calendar.</DialogDescription>
         </DialogHeader>
-        <EditPlanActivity onCancel={() => setIsOpen?.(false)} planActivity={planActivity} />
+        <EditPlanActivity
+          onCancel={onCancel}
+          planActivity={planActivity}
+          onDelete={onDelete}
+        />
       </DialogContent>
     </Dialog>
   );
