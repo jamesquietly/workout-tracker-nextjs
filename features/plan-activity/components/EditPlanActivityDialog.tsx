@@ -20,7 +20,7 @@ export function EditPlanActivityDialog({
   onDelete?: () => void;
 }) {
   return (
-    <Dialog open={open}>
+    <Dialog open={open} onOpenChange={onCancel}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Edit Workout</DialogTitle>
